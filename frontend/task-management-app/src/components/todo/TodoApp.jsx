@@ -16,7 +16,7 @@ import './TodoApp.css'
 class TodoApp extends Component {
     render(){
         return(
-            <div className = "taskApp">
+            <div className = "todoApp">
                 <Router>
                     <>
                     <HeaderComponent/>
