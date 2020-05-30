@@ -1,11 +1,15 @@
 button {
-    background-color: green;
+    background-color: goldenrod;
     font-size: 15px;
     color: white;
     width: 100px;
     height: 40px;
 }
 
-.todoApp {
-    padding: 50px 50px;
+.myTasks {
+    background-color : goldenrod;
+    font-size: 15px;
+    color: white;
+    width: 80px;
+    height: 30px;
 }
