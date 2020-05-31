@@ -1,0 +1,12 @@
+
+retieve all Todos for a user
+GET -> users/{user_name}/todos
+
+delete a Todo for a user
+DELETE -> /users/{user_name}/todos/{todo_id}
+
+edit/update a Todo
+PUT -> /users/{user_name}/todos/{todo_id}
+
+create a new Todo
+POST -> users/{user_name}/todos
