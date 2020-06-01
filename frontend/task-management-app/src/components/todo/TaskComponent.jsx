@@ -1,50 +1,122 @@
-import React, {Component} from 'react'
+import React, { Component } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import moment from "moment";
+import AuthenticationService from './AuthenticationService'
+import TaskDataService from "../../api/tasks/TaskDataService";
 
-class TasksComponent extends Component {
+class TaskComponent extends Component {
 
-    constructor(){
-        super()
+    constructor(props)
+    {
+        super(props)
         this.state = {
-            tasks : [
-                {id : 1, description : "Learn React",duedate:new Date(), status:"onGoing"},
-                {id : 2, description : "Visit India", duedate:new Date(), status:"onGoing"},
-                {id : 2, description : "Evening Meeting", duedate:new Date(), status:"start"},
-                {id : 3, description : "StackHack", duedate:new Date(), status:"start"}
-            ]
+            id: this.props.match.params.id,
+            description : '',
+            dueDate : null,
+            status : null
+        }
+        this.onSubmit = this.onSubmit.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
+    }
+
+    componentDidMount(){
+        if(this.state.id === -1)
+                return;
+        let user = AuthenticationService.getLoggedInUserName()
+        this.getTask(user)
+    }
+
+    getTask(user){
+        TaskDataService.getTask(user, this.state.id)
+        .then(response => {
+                  console.log(response)
+                  console.log(moment(response.data.dueDate).format("YYYY-MM-DD"))
+                    this.setState(
+                        {
+                            description : response.data.description, 
+                            dueDate : moment(response.data.dueDate).format("YYYY-MM-DD"),
+                            status : response.data.status
+                        }
+                    )
+                }
+        )
+    }
+
+    validate(values) {
+        let errors = {}
+        
+        if(!values.description)
+            errors.description = 'Enter a Description'
+        else if (values.description.length < 5)
+            errors.description = 'Enter atleast 5 characters in Description'
+        
+        if(!moment(values.dueDate).isValid())
+            errors.dueDate = "Enter a valid Due Date"
+        return errors            
+            
+    }
+    onSubmit(values) {
+        console.log(values)
+        let username = AuthenticationService.getLoggedInUserName()
+        let todo = {
+            id: this.state.id,
+            description: values.description,
+            dueDate: values.dueDate
+        }
+
+        if (this.state.id === -1) {
+            TaskDataService.createTask(username, todo)
+                .then(() => this.props.history.push("/tasks"))
+        } else { 
+            TaskDataService.updateTask(username, this.state.id,todo)
+                .then(() => this.props.history.push("/tasks"))
         }
     }
+
     render(){
+        let {description , dueDate , status} = this.state
         return(
-            <div>
-                <h1>Tasks List</h1>
-                <div className = "container">
-                    <table className = "table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Description</th>
-                                <th>Due-Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.state.tasks.map( 
-                                    task =>
-                                    <tr key = {task.id}>
-                                        <td>{task.id}</td>
-                                        <td>{task.description}</td>
-                                        <td>{task.duedate.toString()}</td>
-                                        <td>{task.status}</td>
-                                    </tr>
-                                )
-                            }
-                        </tbody>
-                    </table>
-                </div>
+        <div>
+            <h1>Task</h1>
+            <div className= "container">
+                <Formik 
+                 initialValues = {{description, dueDate, status}}
+                 onSubmit = {this.onSubmit}
+                 validateOnChange = {false}
+                 validateOnBlur = {false}
+                 validate = {this.validate }
+                 enableReinitialize = {true}
+                >
+                    {
+                        (props) => (
+                            <Form>
+                                <ErrorMessage name = "description" component = "div" className = "alert alert-warning" />
+                                <ErrorMessage name = "dueDate" component = "div" className = "alert alert-warning" />
+                                <fieldset className = "from-group" >
+                                    <label>Description</label>
+                                    <Field className="form-control" type= "text" name ="description"></Field>
+                                </fieldset>
+                                <fieldset className = "from-group">
+                                    <label>DueDate</label>
+                                    <Field className="form-control" type= "date" name = "dueDate"></Field>
+                                </fieldset>
+                                <fieldset className = "from-group">
+                                    <label>Status</label>
+                                    <Field className="form-control" as = "select" name = "status">
+                                        <option value = "Start">Start</option>
+                                        <option value = "OnGoing">OnGoing</option>
+                                        <option value = "Completed">Completed</option>
+                                    </Field>
+                                </fieldset>
+                                <button className = "btn btn-success" type = "submit">Save</button> 
+                            </Form>
+                        )                     
+                    }
+                </Formik>          
             </div>
+        </div>
         )
     }
 }
 
-export default TasksComponent
+export default TaskComponent

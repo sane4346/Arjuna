@@ -6,11 +6,14 @@ import com.guru84.todo.app.Status;
 
 public class Todo {
 	
-	private Integer id;
+	private long id;
 	private String description;
 	private Date dueDate;
 	private Status status;
 	
+	protected Todo() {
+		
+	}
 	public Todo(Integer id, String description, Date dueDate, Status status) {
 		super();
 		this.id = id;
@@ -19,10 +22,10 @@ public class Todo {
 		this.status = status;
 	}
 	
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getDescription() {
