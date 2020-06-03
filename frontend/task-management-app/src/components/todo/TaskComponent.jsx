@@ -12,8 +12,8 @@ class TaskComponent extends Component {
         this.state = {
             id: this.props.match.params.id,
             description : '',
-            dueDate : null,
-            status : null
+            dueDate : '',
+            status : "Select"
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -56,12 +56,15 @@ class TaskComponent extends Component {
             
     }
     onSubmit(values) {
-        console.log(values)
+        //console.log(values)
         let username = AuthenticationService.getLoggedInUserName()
+        console.log("status = " + values.status)
         let todo = {
             id: this.state.id,
             description: values.description,
-            dueDate: values.dueDate
+            dueDate: values.dueDate,
+            status : values.status
+            
         }
 
         if (this.state.id === -1) {
@@ -102,7 +105,7 @@ class TaskComponent extends Component {
                                 </fieldset>
                                 <fieldset className = "from-group">
                                     <label>Status</label>
-                                    <Field className="form-control" as = "select" name = "status">
+                                    <Field className="form-control" as = "Select" name = "status">
                                         <option value = "Start">Start</option>
                                         <option value = "OnGoing">OnGoing</option>
                                         <option value = "Completed">Completed</option>
@@ -117,6 +120,8 @@ class TaskComponent extends Component {
         </div>
         )
     }
+
+
 }
 
 export default TaskComponent

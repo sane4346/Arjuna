@@ -2,18 +2,19 @@ package com.guru84.todo.app.service;
 
 import java.util.List;
 
-import com.guru84.todo.app.model.Todo;
+import com.guru84.todo.app.entity.TodoEntity;
+import com.guru84.todo.app.shared.dto.TodoDto;
 
 public interface TodoService {
 	
-	List<Todo> getTodoOfUser(String username);
+	List<TodoDto> getTodoByUserId(String userId);
 	
-	Todo findById(String username, long id);
+	TodoDto getTodoByTodoId(String username, String id);
 	
-	Todo deleteTodoOfUser(String username, long id);
+	TodoEntity deleteTodoOfUser(String username, long id);
 
-	Todo updateTodo(Todo todo);
+	TodoEntity updateTodo(TodoEntity todo);
 
-	Todo createTodo(Todo todo);
+	TodoEntity createTodo(TodoEntity todo);
 
 }
