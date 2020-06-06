@@ -1,4 +1,4 @@
-package com.guru84.todo.app;
+package com.guru84.todo.app.enums;
 
 public enum Status {
 	Completed("Completed"),

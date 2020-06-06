@@ -21,7 +21,6 @@ import com.guru84.todo.app.service.TodoService;
 import com.guru84.todo.app.shared.dto.TodoDto;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class TodoController {
 	
 	@Autowired
@@ -45,19 +44,6 @@ public class TodoController {
 //		return todoService.findById(username, id);
 //	}
 	
-	@PutMapping(path = "users/{username}/todos/{id}")
-	public ResponseEntity<TodoEntity> updateTodo(@PathVariable String username, @PathVariable long id, @RequestBody TodoEntity todo){
-		 TodoEntity todoUpdated = todoService.updateTodo(todo);
-		 return new ResponseEntity<TodoEntity>(todoUpdated, HttpStatus.OK);
-	}
-	//create a new Todo
-	//POST -> users/{user_name}/todos
-	@PostMapping(path = "users/{username}/todos")
-	public ResponseEntity<Void> crateTodo(@PathVariable String username, @RequestBody TodoEntity todo){
-		 TodoEntity createdTodo = todoService.createTodo(todo);
-		 URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-		 .path("/{id}").buildAndExpand(createdTodo.getId()).toUri();
-		 return ResponseEntity.created(uri).build();
-	}
+
 
 }
