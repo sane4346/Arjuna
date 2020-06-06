@@ -6,23 +6,21 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.guru84.todo.app.entity.UserEntity;
-import com.guru84.todo.app.exceptions.UserServiceException;
 import com.guru84.todo.app.repositories.UserRepository;
 import com.guru84.todo.app.service.UserService;
-import com.guru84.todo.app.shared.dto.AddressDto;
 import com.guru84.todo.app.shared.dto.UserDto;
 import com.guru84.todo.app.ui.model.response.ErrorMessages;
 import com.guru84.todo.app.utils.Utils;
+import com.guru84.todo.app.entity.User;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	Utils utils;
 	
 	@Autowired
-	BCryptPasswordEncoder bCrptPasswordEncoder;
+	BCryptPasswordEncoder encoder;
 	
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -48,14 +46,15 @@ public class UserServiceImpl implements UserService {
 		//UserEntity userEntity = new UserEntity();
 		//BeanUtils.copyProperties(user, userEntity);
 		ModelMapper modelMapper  = new ModelMapper();
-		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+		User userEntity = modelMapper.map(user, User.class);
 		
-		userEntity.setEncryptedPassword(bCrptPasswordEncoder.encode(user.getPassword()));
+		userEntity.setPassword(
+				encoder.encode(user.getPassword()));
 		
 		String publicUserId = utils.generateUserId(30);
-		userEntity.setUserId(publicUserId);
+		//userEntity.setUserId(publicUserId);
 		
-		UserEntity storedUserDetails = userRepository.save(userEntity);
+		User storedUserDetails = userRepository.save(userEntity);
 		
 		//UserDto returnValue = new UserDto();
 		//BeanUtils.copyProperties(storedUserDetails, returnValue);
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override 
 	public UserDto getUser(String email) throws UsernameNotFoundException{
-		UserEntity entity = userRepository.findByEmail(email);
+		User entity = userRepository.findByUsername(email);
 		
 		if (entity == null) throw new UsernameNotFoundException(email);
 
@@ -76,16 +75,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserEntity userEntity = userRepository.findByEmail(email);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	//	User userEntity = userRepository.findByUsername(username);
 		
-		if (userEntity == null) throw new UsernameNotFoundException(email);
-		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		//if (userEntity == null) throw new UsernameNotFoundException(username);
+		return  null;//new User(userEntity.getUsername(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}
 
 	@Override
 	public UserDto getUserByUserId(String userId) {
-		UserEntity entity = userRepository.findByUserId(userId);
+		User entity = userRepository.findByUsername(userId);
 		
 		if(entity == null) throw new UsernameNotFoundException(userId); // Similar to updateUser method , we can use UserServiceException
 		
@@ -98,13 +97,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(String userId, UserDto user) {
 		
-		UserEntity entity = userRepository.findByUserId(userId);
+		User entity = userRepository.findByUsername(userId);
 		
-		if (entity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		//if (entity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		
-		entity.setFirstName(user.getFirstName());
-		entity.setLastName(user.getLastName());
-		UserEntity updatedEntity = userRepository.save(entity);
+		entity.setName(user.getFirstName());
+		User updatedEntity = userRepository.save(entity);
 		
 		UserDto returnValue = new UserDto();
 		
@@ -117,8 +115,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Boolean deleteUserByUserId(String userId) {
 		
-		UserEntity entity = userRepository.findByUserId(userId);
-		if (entity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		User entity = userRepository.findByUsername(userId);
+		//if (entity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		userRepository.delete(entity);
 		
 		return true;
@@ -132,17 +130,17 @@ public class UserServiceImpl implements UserService {
 		
 		List<UserDto> returnvalue = new ArrayList<UserDto>();
 		
-		Pageable pageableRequest = PageRequest.of(page, limit);
-		
-		Page<UserEntity> pagedUsers = userRepository.findAll(pageableRequest);
-		
-		List<UserEntity> users = pagedUsers.getContent();
-		
-		for(UserEntity userEntity : users) {
-			UserDto oneUser = new UserDto();
-			BeanUtils.copyProperties(userEntity, oneUser);
-			returnvalue.add(oneUser);
-		}
+//		Pageable pageableRequest = PageRequest.of(page, limit);
+//		
+//		Page<User> pagedUsers = userRepository.findAll(pageableRequest);
+//		
+//		List<User> users = pagedUsers.getContent();
+//		
+//		for(User userEntity : users) {
+//			UserDto oneUser = new UserDto();
+//			BeanUtils.copyProperties(userEntity, oneUser);
+//			returnvalue.add(oneUser);
+//		}
 		
 		
 		return returnvalue;

@@ -1,6 +1,5 @@
 package com.guru84.todo.app.ui.model.response;
 
-import java.util.List;
 
 public class UserRest {
 

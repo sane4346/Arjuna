@@ -1,8 +1,13 @@
 package com.guru84.todo.app.ui.model.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+
+@JsonView()
 public class UserLoginRequestModel {
 
 	private String email;
+	
 	private String password;
 
 	public String getEmail() {

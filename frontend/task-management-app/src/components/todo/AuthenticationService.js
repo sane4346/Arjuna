@@ -3,22 +3,34 @@ import TaskDataService from "../../api/tasks/TaskDataService";
 
 class AuthenticationService {
 
+    // executeBasicAuthenticationService(email, password){
+    //     let body = {
+    //         email : email,
+    //         password : password
+    //     }
+    //     const requestOptions = {
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ email, password })
+    //     };
+    //     //console.log(reqBody)
+    //     return axios.post('http://localhost:8080/mobile-app-ws/users/login',{
+    //         email : email,
+    //         password : password
+    //     }, {
+    //      headers: {
+    //          "Accept" : "application/json",
+    //         "Access-Control-Allow-Origin": "*",
+    //         "Access-Control-Allow-Methods" : "OPTIONS, GET, POST, HEAD",
+    //         "Content-Type": "application/json"
+    //         }
+    //     })
+    // }
+
     executeBasicAuthenticationService(username, password){
-        let reqBody = {
-            email : username,
-            password : password
-        }
-        const options = {
-            headers: {'Content-Type':'application/json'}
-          };
-        console.log(reqBody)
-        return axios.post('http://localhost:8080/guru84-task-ws/users/login',{
-            email : username,
-            password : password
-        },options)
-        //  {
-        //     headers : {authorization : this.createBasicAuthToken(username, password)}
-        // })
+        return axios.post('http://localhost:8080/api/auth/signin',{
+            username,
+            password
+        })
     }
 
     saveToken(token) {
@@ -29,12 +41,14 @@ class AuthenticationService {
         localStorage.getToken('token')
     }
 
-    createBasicAuthToken(username, password){
-        return 'Basic ' + window.btoa(username + ":" + password)
+    createJWTToken(token){
+        return 'Bearer ' + token
     }
-    registerSuccessfulLogin(userId, password,token){
-        sessionStorage.setItem('authenticatedUser',userId);   
-        this.setupAxiosInterceptor(token)
+
+    registerSuccessfulLoginJwt(username,token){
+        console.log(token)
+        sessionStorage.setItem('authenticatedUser',username);   
+        this.setupAxiosInterceptor(this.createJWTToken(token))
     }
 
     logoutUser(){
@@ -55,12 +69,12 @@ class AuthenticationService {
         return user;
     }
 
-    setupAxiosInterceptor(basicAuthHeader){
+    setupAxiosInterceptor(token){
 
         axios.interceptors.request.use(
             (config) => {
                 if(this.isUserLoggedIn()){
-                     config.headers.authorization = basicAuthHeader
+                     config.headers.authorization = token
                 }
                 return config
             }

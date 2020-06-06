@@ -1,10 +1,12 @@
 package com.guru84.todo.app.ui.model.response;
 
 public class TodoRest {
+	
 	private String todoId;
 	private String description;
 	private String dueDate;
 	private String status;
+	
 	public String getTodoId() {
 		return todoId;
 	}

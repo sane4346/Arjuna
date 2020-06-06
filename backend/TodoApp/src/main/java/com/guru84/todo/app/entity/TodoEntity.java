@@ -13,12 +13,14 @@ import javax.persistence.ManyToOne;
 @Entity(name="todos")
 public class TodoEntity implements Serializable {
 
+	private static final long serialVersionUID = -650440877299460260L;
+
 	@Id
 	@GeneratedValue
 	private long id;
 
 	@Column(length = 30, nullable = false)
-	private String todoId;
+	private long todoId;
 
 	@Column(length = 30, nullable = false)
 	private String description;
@@ -31,7 +33,7 @@ public class TodoEntity implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "users_id")
-	private UserEntity userDetails;
+	private User userDetails;
 		
 	public long getId() {
 		return id;
@@ -60,19 +62,19 @@ public class TodoEntity implements Serializable {
 		this.status = status;
 	}
 	
-	public String getTodoId() {
+	public long getTodoId() {
 		return todoId;
 	}
 
-	public void setTodoId(String todoId) {
+	public void setTodoId(long todoId) {
 		this.todoId = todoId;
 	}
 
-	public UserEntity getUserDetails() {
+	public User getUserDetails() {
 		return userDetails;
 	}
 
-	public void setUserDetails(UserEntity userDetails) {
+	public void setUserDetails(User userDetails) {
 		this.userDetails = userDetails;
 	}
 
