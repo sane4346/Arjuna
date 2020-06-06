@@ -2,15 +2,15 @@ package com.guru84.todo.app.ui.model.response;
 
 public class TodoRest {
 	
-	private String todoId;
+	private long todoId;
 	private String description;
 	private String dueDate;
 	private String status;
 	
-	public String getTodoId() {
+	public long getTodoId() {
 		return todoId;
 	}
-	public void setTodoId(String todoId) {
+	public void setTodoId(long todoId) {
 		this.todoId = todoId;
 	}
 	public String getDescription() {
