@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity(name="todos")
 public class TodoEntity implements Serializable {
@@ -31,9 +29,8 @@ public class TodoEntity implements Serializable {
 	@Column(length = 15, nullable = false)
 	private String status;
 	
-	@ManyToOne
-	@JoinColumn(name = "users_id")
-	private User userDetails;
+	@Column(length = 15, nullable = false)
+	private String username;
 		
 	public long getId() {
 		return id;
@@ -70,12 +67,12 @@ public class TodoEntity implements Serializable {
 		this.todoId = todoId;
 	}
 
-	public User getUserDetails() {
-		return userDetails;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserDetails(User userDetails) {
-		this.userDetails = userDetails;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override

@@ -51,22 +51,23 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
     	
-    	String userId = loginRequest.getUsername();
-    	if(Objects.isNull(userId)) {
-    		userId = loginRequest.getEmail();
-    	}
+    	String username = loginRequest.getUsername();
+    	if(Objects.isNull(username)) {  			
+    		username = userRepository.findByEmail(loginRequest.getEmail()).getUsername();
+    	} 
     	
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        userId,
+                		username,
                         loginRequest.getPassword()
                 )
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication); 
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, username));
     }
 
     @PostMapping("/signup")

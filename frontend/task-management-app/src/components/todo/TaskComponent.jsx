@@ -13,10 +13,13 @@ class TaskComponent extends Component {
             id: this.props.match.params.id,
             description : '',
             dueDate : '',
-            status : "Select"
+            status : '',
+            userId : '',
+            todoId :''
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        console.log(this.state.id)
     }
 
     componentDidMount(){
@@ -52,22 +55,26 @@ class TaskComponent extends Component {
         
         if(!moment(values.dueDate).isValid())
             errors.dueDate = "Enter a valid Due Date"
+        if(!values.status)
+        errors.description = 'Please select a status value'
         return errors            
             
     }
     onSubmit(values) {
+
         //console.log(values)
         let username = AuthenticationService.getLoggedInUserName()
-        console.log("status = " + values.status)
+        //console.log(username)
         let todo = {
-            id: this.state.id,
+            todoId: this.state.id,
             description: values.description,
             dueDate: values.dueDate,
-            status : values.status
-            
+            status : values.status,    
+            username : username       
         }
-
-        if (this.state.id === -1) {
+       // console.log(todo.todoId)
+        if (todo.todoId == -1) {
+            console.log(todo)
             TaskDataService.createTask(username, todo)
                 .then(() => this.props.history.push("/tasks"))
         } else { 
@@ -106,8 +113,9 @@ class TaskComponent extends Component {
                                 <fieldset className = "from-group">
                                     <label>Status</label>
                                     <Field className="form-control" as = "Select" name = "status">
-                                        <option value = "Start">Start</option>
-                                        <option value = "OnGoing">OnGoing</option>
+                                        <option value = "Select">Select</option>
+                                        <option value = "New">New</option>
+                                        <option value = "In progress">In progress</option>
                                         <option value = "Completed">Completed</option>
                                     </Field>
                                 </fieldset>

@@ -1,56 +1,35 @@
 import axios from 'axios'
+import {API_URL} from '../../constants'
 
 class TaskDataService {
 
     signUpUser(name,username,email, password){
-        let reqBody = {
-            name : name,
-            username : username,
-            email : email,
-            password : password
-        }
-        return axios.get('http://localhost:8080/auth/api/singup',reqBody)
+        return axios.post(`${API_URL}/auth/api/singup`,{
+            name,
+            username,
+            email,
+            password
+        })
     }
     //let name = 'wKUxcyXrboyKkeKf1QtxlBFjS2WKSX'
-    retrieveAllTasks(username, authToken){
-        return axios.get(`http://localhost:8080/guru84-task-ws/users/${username}/todos`,{
-            headers : {
-                Authorization : authToken            
-            }
-        })
+    retrieveAllTasks(username){
+        return axios.get(`${API_URL}/users/${username}/todos`)
     }
 
-    deleteTask(username, id, authToken){
-        return axios.delete(`http://localhost:8080/guru84-task-ws/users/${username}/todos/${id}`,
-        {
-            headers : {
-                Authorization : authToken            }
-        })
+    deleteTask(username, id){
+        return axios.delete(`${API_URL}/users/${username}/todos/${id}`)
     }
 
-    getTask(username, id, authToken){
-        return axios.get(`http://localhost:8080/guru84-task-ws/users/${username}/todos/${id}`,
-        {
-            headers : {
-                Authorization : authToken
-            }
-        })
+    getTask(username, id){
+        return axios.get(`${API_URL}/users/${username}/todos/${id}`)
     }
 
-    updateTask(username, id, todo, authToken){
-        return axios.put(`http://localhost:8080/guru84-task-ws/users/${username}/todos/${id}`, todo,{
-            headers : {
-                Authorization : authToken            
-            }
-        })
+    updateTask(username, id, todo){
+        return axios.put(`${API_URL}/users/${username}/todos/${id}`, todo)
     }
 
-    createTask(username, todo, authToken){
-        return axios.post(`http://localhost:8080/guru84-task-ws/users/${username}/todos`, todo,{
-            headers : {
-                Authorization : authToken            
-            }
-        })
+    createTask(username, todo){
+        return axios.post(`${API_URL}/users/${username}/todos`, todo)
     }
 }
 

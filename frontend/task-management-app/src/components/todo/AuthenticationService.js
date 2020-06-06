@@ -1,44 +1,25 @@
 import axios from "axios";
 import TaskDataService from "../../api/tasks/TaskDataService";
+import {API_URL} from '../../constants'
+
+export const USER_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
+export const ACCESS_TOKEN = 'accessToken'
 
 class AuthenticationService {
 
-    // executeBasicAuthenticationService(email, password){
-    //     let body = {
-    //         email : email,
-    //         password : password
-    //     }
-    //     const requestOptions = {
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ email, password })
-    //     };
-    //     //console.log(reqBody)
-    //     return axios.post('http://localhost:8080/mobile-app-ws/users/login',{
-    //         email : email,
-    //         password : password
-    //     }, {
-    //      headers: {
-    //          "Accept" : "application/json",
-    //         "Access-Control-Allow-Origin": "*",
-    //         "Access-Control-Allow-Methods" : "OPTIONS, GET, POST, HEAD",
-    //         "Content-Type": "application/json"
-    //         }
-    //     })
-    // }
-
     executeBasicAuthenticationService(username, password){
-        return axios.post('http://localhost:8080/api/auth/signin',{
+        return axios.post(`${API_URL}/api/auth/signin`,{
             username,
             password
         })
     }
 
     saveToken(token) {
-        console.log("token" + token)
-        localStorage.saveToken('token', token)
+       // console.log("token" + token)
+        localStorage.setItem(ACCESS_TOKEN, token)
     }
     getToken(){
-        localStorage.getToken('token')
+        localStorage.getItem(ACCESS_TOKEN)
     }
 
     createJWTToken(token){
@@ -46,30 +27,31 @@ class AuthenticationService {
     }
 
     registerSuccessfulLoginJwt(username,token){
-        console.log(token)
-        sessionStorage.setItem('authenticatedUser',username);   
-        this.setupAxiosInterceptor(this.createJWTToken(token))
+        console.log(username)
+        sessionStorage.setItem(USER_SESSION_ATTRIBUTE_NAME, username); 
+        this.saveToken(token);  
+        this.setupAxiosInterceptors(this.createJWTToken(token))
     }
 
     logoutUser(){
-        sessionStorage.removeItem('authenticatedUser')
+        sessionStorage.removeItem(USER_SESSION_ATTRIBUTE_NAME)
     }
 
     isUserLoggedIn(){
-        let user = sessionStorage.getItem('authenticatedUser')
+        let user = sessionStorage.getItem(USER_SESSION_ATTRIBUTE_NAME)
         if(user === null)
             return false;
         return true;
     }
 
     getLoggedInUserName(){
-        let user = sessionStorage.getItem('authenticatedUser')
+        let user = sessionStorage.getItem(USER_SESSION_ATTRIBUTE_NAME)
         if(user === null)
             return '';
         return user;
     }
 
-    setupAxiosInterceptor(token){
+    setupAxiosInterceptors(token){
 
         axios.interceptors.request.use(
             (config) => {

@@ -1,12 +1,14 @@
 package com.guru84.todo.app.shared.dto;
 
+import java.util.Date;
+
 public class TodoDto {
 	
 	private long todoId;
 	private String description;
-	private String dueDate;
+	private Date dueDate;
 	private String status;
-	private UserDto userDetails;
+	private String  username;
 	
 
 	public long getTodoId() {
@@ -21,10 +23,10 @@ public class TodoDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getDueDate() {
+	public Date getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(String dueDate) {
+	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 	public String getStatus() {
@@ -33,11 +35,11 @@ public class TodoDto {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public UserDto getUserDetails() {
-		return userDetails;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserDetails(UserDto userDetails) {
-		this.userDetails = userDetails;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

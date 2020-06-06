@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-
+// This class can be used to create random userId for more security purpose.
 @Component
 public class Utils {
 	

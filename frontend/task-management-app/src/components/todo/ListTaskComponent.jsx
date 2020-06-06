@@ -28,35 +28,26 @@ class ListTaskComponent extends Component {
         TaskDataService.retrieveAllTasks(user)
         .then(
             response => {
+                console.log(response)
                 this.setState({ tasks : response.data})
             }
         )
     }
-    deleteTask(id){
+    deleteTask(todoId){
         let username = AuthenticationService.getLoggedInUserName()
-        TaskDataService.deleteTask(username, id)
+        TaskDataService.deleteTask(username, todoId)
         .then(
                 response => {
                     console.log(response)
-                    this.setState({message : `Delete of task ${id} Successful`})
+                    this.setState({message : `Delete of task ${todoId} Successful`})
                     this.refreshTasks(username)
                     this.message = null
                 }
         )
     }
-    updateTaskClicked(id){
-        console.log(`update called for ${id}`)
-        this.props.history.push(`/tasks/${id}`)
-        // let username = AuthenticationService.getLoggedInUserName()
-        // TaskDataService.deleteTask(username, id)
-        // .then(
-        //         response => {
-        //             console.log(response)
-        //             this.setState({message : `Delete of task ${id} Successful`})
-        //             this.refreshTasks(username)
-        //             this.message = null
-        //         }
-        // )
+    updateTaskClicked(todoId){
+        console.log(`update called for ${todoId}`)
+        this.props.history.push(`/tasks/${todoId}`)
     }
 
     addTaskClicked(){
@@ -74,7 +65,6 @@ class ListTaskComponent extends Component {
                         <table className = "table">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Description</th>
                                     <th>Due-Date</th>
                                     <th>Status</th>
@@ -86,13 +76,12 @@ class ListTaskComponent extends Component {
                                 {
                                     this.state.tasks.map( 
                                         task =>
-                                        <tr key = {task.id}>
-                                            <td>{task.id}</td>
+                                        <tr key = {task.todoId}>
                                             <td>{task.description}</td>
                                             <td>{moment(task.dueDate).format("YYYY-MM-DD")}</td>
                                             <td>{task.status}</td>
-                                            <td><button className = "btn btn-success" onClick = {() => this.updateTaskClicked(task.id)}>Update</button></td>
-                                            <td><button className = "btn btn-warning" onClick = {() => this.deleteTask(task.id)}>Delete</button></td>
+                                            <td><button className = "btn btn-success" onClick = {() => this.updateTaskClicked(task.todoId)}>Update</button></td>
+                                            <td><button className = "btn btn-warning" onClick = {() => this.deleteTask(task.todoId)}>Delete</button></td>
                                         </tr>
                                     )
                                 }
@@ -120,12 +109,11 @@ class ListTaskComponent extends Component {
                                 {
                                     this.state.completedTask.map( 
                                         task =>
-                                        <tr key = {task.id}>
-                                            <td>{task.id}</td>
+                                        <tr key = {task.todoId}>
                                             <td>{task.description}</td>
                                             <td>{task.dueDate.toString()}</td>
                                             <td>{task.status}</td>
-                                            <td><button className = "btn btn-warning" onClick = {() => this.refreshTasks(task.id)}>Delete</button></td>
+                                            <td><button className = "btn btn-warning" onClick = {() => this.refreshTasks(task.todoId)}>Delete</button></td>
                                         </tr>
                                     )
                                 }
