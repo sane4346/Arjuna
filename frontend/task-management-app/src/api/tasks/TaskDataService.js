@@ -4,7 +4,7 @@ import {API_URL} from '../../constants'
 class TaskDataService {
 
     signUpUser(name,username,email, password){
-        return axios.post(`${API_URL}/auth/api/singup`,{
+        return axios.post(`${API_URL}/api/auth/signup`,{
             name,
             username,
             email,

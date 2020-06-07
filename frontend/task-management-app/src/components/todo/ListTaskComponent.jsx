@@ -28,7 +28,7 @@ class ListTaskComponent extends Component {
         TaskDataService.retrieveAllTasks(user)
         .then(
             response => {
-                console.log(response)
+               // console.log(response)
                 this.setState({ tasks : response.data})
             }
         )
@@ -38,7 +38,7 @@ class ListTaskComponent extends Component {
         TaskDataService.deleteTask(username, todoId)
         .then(
                 response => {
-                    console.log(response)
+                   // console.log(response)
                     this.setState({message : `Delete of task ${todoId} Successful`})
                     this.refreshTasks(username)
                     this.message = null
@@ -46,12 +46,12 @@ class ListTaskComponent extends Component {
         )
     }
     updateTaskClicked(todoId){
-        console.log(`update called for ${todoId}`)
+       // console.log(`update called for ${todoId}`)
         this.props.history.push(`/tasks/${todoId}`)
     }
 
     addTaskClicked(){
-        console.log('Add called')
+       // console.log('Add called')
         this.props.history.push(`/tasks/-1`)
     }
 

@@ -13,7 +13,7 @@ class AuthenticationService {
             password
         })
     }
-
+    
     saveToken(token) {
        // console.log("token" + token)
         localStorage.setItem(ACCESS_TOKEN, token)
@@ -27,7 +27,7 @@ class AuthenticationService {
     }
 
     registerSuccessfulLoginJwt(username,token){
-        console.log(username)
+        //console.log(username)
         sessionStorage.setItem(USER_SESSION_ATTRIBUTE_NAME, username); 
         this.saveToken(token);  
         this.setupAxiosInterceptors(this.createJWTToken(token))
