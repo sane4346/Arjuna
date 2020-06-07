@@ -46,7 +46,7 @@ class SignupComponent extends Component {
         return(
     <div>
         <div className="login-form">
-                    {this.state.hasSignupFailed && <div classNameName = "alert alert-warning">Username or email already registered!</div>}
+                    {this.state.hasSignupFailed && <div classNameName = "alert alert-warning">Something Went wrong, Please try after sometime!</div>}
                     {this.state.isSignupSuccessful && <div> {this.state.message} , Click on "Login here!" to go to Login Page</div>}
                 <form className="text-left">
                 <h2 className="text-center">Sign Up</h2> 
