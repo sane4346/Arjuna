@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'
 
 class LoginComponent extends Component {
 
     constructor(props){
         super()
         this.state = {
-            username : 'santosh',
+            username : '',
             password : '',
             hasLoginFailed : false,
             isLoginSuccessful : false,
@@ -65,13 +68,29 @@ class LoginComponent extends Component {
 
     render(){
         return(
-            <div className = "container">
-                <h1>Login</h1>
-                <div>
-        {this.state.hasLoginFailed && <div className = "alert alert-warning">{this.state.networkError}</div>}
-                    User Name : <input type = "text" name = "username" value = {this.state.username} onChange = {this.handleChange}/>
-                    Password : <input type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange}/>
-                    <button className = "btn btn-success" onClick = {this.loginClicked}>Login</button>
+            
+            <div>
+                <div class="login-form">
+              
+                    {this.state.hasLoginFailed && <div className = "alert alert-warning">Invalid Credentials</div>}
+                    <form className="text-left">
+                    <h2 className="text-center">Login</h2> 
+                   <div className="form-group text-left">
+                     <label> <FontAwesomeIcon icon={faUser} /> User Name </label>
+                      <input className="form-control" type = "text" name = "username" value = {this.state.username} onChange = {this.handleChange}/>				
+                  </div>
+                    <div class="form-group">
+                    <label><FontAwesomeIcon icon={faLock} /> Password </label> 
+                       <input className="form-control" type = "password" name = "password" value = {this.state.password} onChange = {this.handleChange}/>				
+                      </div>
+                </form>
+                <div class="form-group text-center">
+                    <button className = "btn btn-success " onClick = {this.loginClicked}>Login</button>
+                    </div>
+                    <p className="text-center text-muted small">Not have an account?</p>
+                    <div className="text-center social-btn">
+                    <a className="btn btn-primary"><Link to = "/signup" className="text-light">Signup here !</Link></a>
+                    </div>
                 </div>
             </div>
         )

@@ -19,7 +19,7 @@ class TaskComponent extends Component {
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
-        console.log(this.state.id)
+        //console.log(this.state.id)
     }
 
     componentDidMount(){
@@ -32,8 +32,8 @@ class TaskComponent extends Component {
     getTask(user){
         TaskDataService.getTask(user, this.state.id)
         .then(response => {
-                  console.log(response)
-                  console.log(moment(response.data.dueDate).format("YYYY-MM-DD"))
+                  //console.log(response)
+                  //console.log(moment(response.data.dueDate).format("YYYY-MM-DD"))
                     this.setState(
                         {
                             description : response.data.description, 
@@ -74,7 +74,7 @@ class TaskComponent extends Component {
         }
        // console.log(todo.todoId)
         if (todo.todoId == -1) {
-            console.log(todo)
+            //console.log(todo)
             TaskDataService.createTask(username, todo)
                 .then(() => this.props.history.push("/tasks"))
         } else { 
