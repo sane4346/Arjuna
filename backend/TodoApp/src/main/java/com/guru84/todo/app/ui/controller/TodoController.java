@@ -75,6 +75,34 @@ public class TodoController {
 		 return new ResponseEntity<TodoRest>(returnValue, HttpStatus.OK);
 	}
 	
+	@GetMapping(path = "/{userId}/archived/todos",
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+
+	public List<TodoRest> getArchivedTodos(@PathVariable String userId){
+
+		List<TodoRest> returnValue = new ArrayList<>();
+		
+		 List<TodoDto> todoDto = todoService.getArchivedTodosByUserId(userId);
+		 
+		if (todoDto != null && !todoDto.isEmpty()) { 
+			ModelMapper modelMapper = new ModelMapper();
+
+			java.lang.reflect.Type listType = new TypeToken<List<TodoRest>>() {}.getType();
+			returnValue = modelMapper.map(todoDto, listType);
+		}
+		return returnValue;
+	}
+	
+	@PutMapping(path = "/{username}/archived/todos/{id}",consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<Void> archiveTodo(@PathVariable String username, @PathVariable long id, @RequestBody TodoDto todo){
+		//TodoRest returnValue = new TodoRest();
+		TodoDto todoUpdated = todoService.archiveTodo(username, id);
+		 if(todoUpdated != null)
+			 return ResponseEntity.noContent().build();
+		 return ResponseEntity.notFound().build();
+	}
+	
 	@DeleteMapping(path = "/{username}/todos/{id}")
 	public ResponseEntity<Void> deleteTodo(@PathVariable String username, @PathVariable long id){
 		TodoDto todo = todoService.deleteTodoOfUser(username,id);

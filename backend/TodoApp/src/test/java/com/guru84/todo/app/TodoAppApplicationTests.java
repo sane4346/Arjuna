@@ -1,4 +1,4 @@
-package com.guru84.todo.rest.service;
+package com.guru84.todo.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

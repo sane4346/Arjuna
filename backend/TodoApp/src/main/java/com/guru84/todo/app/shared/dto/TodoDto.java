@@ -8,7 +8,14 @@ public class TodoDto {
 	private String description;
 	private Date dueDate;
 	private String status;
+	public Boolean getIsArchived() {
+		return isArchived;
+	}
+	public void setIsArchived(Boolean isArchived) {
+		this.isArchived = isArchived;
+	}
 	private String  username;
+	private Boolean isArchived;
 	
 
 	public long getTodoId() {

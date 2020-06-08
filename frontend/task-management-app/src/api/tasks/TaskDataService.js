@@ -16,6 +16,10 @@ class TaskDataService {
         return axios.get(`${API_URL}/users/${username}/todos`)
     }
 
+    retrieveArchivedTasks(username){
+        return axios.get(`${API_URL}/users/${username}/archived/todos`)
+    }
+
     deleteTask(username, id){
         return axios.delete(`${API_URL}/users/${username}/todos/${id}`)
     }
@@ -26,6 +30,10 @@ class TaskDataService {
 
     updateTask(username, id, todo){
         return axios.put(`${API_URL}/users/${username}/todos/${id}`, todo)
+    }
+
+    archiveTask(username, id, todo){
+        return axios.put(`${API_URL}/users/${username}/archived/todos/${id}`, todo)
     }
 
     createTask(username, todo){

@@ -11,4 +11,6 @@ import com.guru84.todo.app.entity.TodoEntity;
 public interface TodoRepository extends CrudRepository<TodoEntity, Long> {
 	List<TodoEntity> getAllByUsername(String username);
 	List<TodoEntity> findByTodoId(long todoId);
+	List<TodoEntity> getAllByUsernameAndIsArchived(String username, Boolean isArchived);
+	List<TodoEntity> findByTodoIdAndIsArchived(long todoId, Boolean isArchived);
 }

@@ -15,7 +15,8 @@ class TaskComponent extends Component {
             dueDate : '',
             status : '',
             userId : '',
-            todoId :''
+            todoId :'', 
+            isArchived: false
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -70,7 +71,8 @@ class TaskComponent extends Component {
             description: values.description,
             dueDate: values.dueDate,
             status : values.status,    
-            username : username       
+            username : username,
+            isArchived: this.state.isArchived       
         }
        // console.log(todo.todoId)
         if (todo.todoId == -1) {

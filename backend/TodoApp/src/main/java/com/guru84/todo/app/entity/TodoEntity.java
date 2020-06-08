@@ -31,6 +31,9 @@ public class TodoEntity implements Serializable {
 	
 	@Column(length = 15, nullable = false)
 	private String username;
+	
+	@Column(length = 15, nullable = false)
+	private Boolean isArchived;
 		
 	public long getId() {
 		return id;
@@ -73,6 +76,14 @@ public class TodoEntity implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public Boolean getIsArchived() {
+		return isArchived;
+	}
+
+	public void setIsArchived(Boolean isArchived) {
+		this.isArchived = isArchived;
 	}
 
 	@Override
