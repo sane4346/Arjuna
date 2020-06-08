@@ -6,6 +6,7 @@ public class TodoRest {
 	private String description;
 	private String dueDate;
 	private String status;
+	private Boolean isArchived;
 	
 	public long getTodoId() {
 		return todoId;
@@ -30,6 +31,12 @@ public class TodoRest {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Boolean getIsArchived() {
+		return isArchived;
+	}
+	public void setIsArchived(Boolean isArchived) {
+		this.isArchived = isArchived;
 	}
 
 }

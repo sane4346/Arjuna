@@ -15,5 +15,9 @@ public interface TodoService {
 	TodoDto updateTodo(TodoDto todo);
 
 	TodoDto createTodo(TodoDto todo);
+	
+	TodoDto archiveTodo(String username, long todoId);
+	
+	List<TodoDto> getArchivedTodosByUserId(String userId);
 
 }

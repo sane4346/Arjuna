@@ -38,7 +38,29 @@ public class TodoServiceImpl implements TodoService {
 		Iterable<TodoEntity> todos = todoRepository.getAllByUsername(userEntity.getUsername());
 
 		for (TodoEntity todo : todos) {
-			returnValue.add(modelMapper.map(todo, TodoDto.class));
+			if(!todo.getIsArchived())
+				returnValue.add(modelMapper.map(todo, TodoDto.class));
+		}
+
+		return returnValue;
+	}
+	
+	@Override
+	public List<TodoDto> getArchivedTodosByUserId(String userId) {
+		List<TodoDto> returnValue = new ArrayList<>();
+
+		User userEntity = userRepository.findByUsername(userId);
+
+		if (userEntity == null)
+			return returnValue; // Similar to updateUser method , we can use UserServiceException
+
+		ModelMapper modelMapper = new ModelMapper();
+
+		Iterable<TodoEntity> todos = todoRepository.getAllByUsername(userEntity.getUsername());
+
+		for (TodoEntity todo : todos) {
+			if(todo.getIsArchived())
+				returnValue.add(modelMapper.map(todo, TodoDto.class));
 		}
 
 		return returnValue;
@@ -58,12 +80,29 @@ public class TodoServiceImpl implements TodoService {
 
 		Iterable<TodoEntity> todos = todoRepository.findByTodoId(todoId);
 		for (TodoEntity todo : todos) {
-			if (todo.getUsername().equals(userId)) {
+			if (todo.getUsername().equals(userId) && !todo.getIsArchived()) {
 				returnValue = modelMapper.map(todo, TodoDto.class);
 				return returnValue;
 			}
 		}
 
+		return null;
+	}
+	
+	@Override
+	public TodoDto archiveTodo(String username, long todoId) {
+		TodoDto returnValue = new TodoDto();
+		ModelMapper modelMapper = new ModelMapper();
+
+		List<TodoEntity> todoEntities = todoRepository.findByTodoId(todoId);
+		for (TodoEntity todoEntity : todoEntities) {
+			if (todoEntity.getUsername().equals(username) && !todoEntity.getIsArchived()) {
+				todoEntity.setIsArchived(true);
+				todoRepository.save(todoEntity);
+				returnValue = modelMapper.map(todoEntity, TodoDto.class);
+				return returnValue;
+			}
+		}
 		return null;
 	}
 
@@ -78,7 +117,7 @@ public class TodoServiceImpl implements TodoService {
 
 		ModelMapper modelMapper = new ModelMapper();
 
-		Iterable<TodoEntity> todos = todoRepository.findByTodoId(todoId);
+		Iterable<TodoEntity> todos = todoRepository.findByTodoIdAndIsArchived(todoId, true);
 		for (TodoEntity todo : todos) {
 			if (todo.getUsername().equals(username)) {
 				returnValue = modelMapper.map(todo, TodoDto.class);
@@ -94,12 +133,10 @@ public class TodoServiceImpl implements TodoService {
 
 		List<TodoEntity> todoEntities = todoRepository.findByTodoId(todo.getTodoId());
 		for (TodoEntity todoEntity : todoEntities) {
-			if (todoEntity.getUsername().equals(todo.getUsername())) {
+			if (todoEntity.getUsername().equals(todo.getUsername()) && !todoEntity.getIsArchived()) {
 				todoEntity.setDescription(todo.getDescription());
 				todoEntity.setDueDate(todo.getDueDate());
 				todoEntity.setStatus(todo.getStatus());
-				todoEntity.setUsername(todo.getUsername());
-				todoEntity.setTodoId(todo.getTodoId());
 				todoRepository.save(todoEntity);
 				return todo;
 			}

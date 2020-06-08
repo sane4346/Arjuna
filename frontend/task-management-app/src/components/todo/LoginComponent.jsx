@@ -28,7 +28,7 @@ class LoginComponent extends Component {
       AuthenticationService.
       executeBasicAuthenticationService(this.state.username, this.state.password)
         .then((response) => {
-            console.log(response)
+           // console.log(response)
             AuthenticationService.registerSuccessfulLoginJwt(response.data.username, response.data.accessToken)
             this.props.history.push(`/welcome/${this.state.username}`)
             }) 
